@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAKA-Production Pricing</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap">
+</head>
+<body>
+    <header>
+        <h1>TAKA-Production Pricing</h1>
+        <nav>
+            <ul>
+                <li><a href="#project-types">Project Types</a></li>
+                <li><a href="#cost-calculator">Cost Calculator</a></li>
+                <li><a href="#about-us">About Us</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="hero">
+        <h2>NEW ERA,Your Vision Animated</h2>
+        <p>Calculate Your Pricing For Producing Pilots And Films To Series And Ads.</p>
+        <button onclick="document.location.href='#cost-calculator'">Calculate</button>
+    </section>
+
+    <section id="project-types">
+        <h2>Project Types</h2>
+        <div class="project-type">
+            <h3>2D Animation</h3>
+            <p>Select between Pilot, Film, Ad, Series, or Medium-Large Scale to learn more about the project cost and details.</p>
+            <a href="https://taka-production.co.site/">Learn More</a>
+        </div>
+        <div class="project-type">
+            <h3>3D Animation</h3>
+            <p>Select between Pilot, Film, Ad, Series, or Medium-Large Scale to learn more about the project cost and details.</p>
+            <a href="https://taka-production.co.site/">Learn More</a>
+        </div>
+    </section>
+
+    <section id="cost-calculator">
+        <h2>Cost Calculator</h2>
+        <div class="calculator">
+            <label for="type">Animation Type:</label>
+            <select id="type" onchange="updateOptions()">
+                <option value="2d">2D</option>
+                <option value="3d">3D</option>
+            </select>
+            <label for="scale">Project Scale:</label>
+            <select id="scale" onchange="updateOptions()">
+                <option value="pilot">Pilot</option>
+                <option value="film">Film</option>
+                <option value="ad">Ad</option>
+                <option value="series">Series</option>
+            </select>
+
+            <div id="ad-duration" style="display: none;">
+                <label for="ad-duration-select">Ad Duration:</label>
+                <select id="ad-duration-select">
+                    <option value="1/2month">Short-Term</option>
+                    <option value="1month">Mid-Term</option>
+                    <option value="2months">Long-Term</option>
+                </select>
+            </div>
+
+            <div id="scale-option" style="display: none;">
+                <label for="scale-option-select">Scale Option:</label>
+                <select id="scale-option-select">
+                    <option value="advanced">Advanced</option>
+                    <option value="enterprise">Enterprise</option>
+                </select>
+            </div>
+
+            <div id="episode-count" style="display: none;">
+                <label for="episode-count-input">Number of Episodes:</label>
+                <input type="range" id="episode-count-input" min="1" max="24" value="1" oninput="document.getElementById('episode-count-value').textContent = this.value">
+                <span id="episode-count-value">1</span>
+            </div>
+
+            <button onclick="calculateCost()">Calculate Cost</button>
+        </div>
+        <div id="cost-display">
+            <p>Total Cost: <span id="total-cost">-</span> IQD</p>
+            <p>Cost per Minute (Series only): <span id="cost-per-minute">-</span> IQD</p>
+            <p id="details-display"></p>
+        </div>
+    </section>
+
+    <section id="about-us">
+        <h2>About Us</h2>
+        <p>We are a passionate team dedicated to bringing your creative visions to life through beautiful animation. Whether you're interested in creating a short film, a commercial, or a full-scale series, we have the tools and expertise to help you succeed.</p>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <form>
+            <h2>Email: takaproductionstudio@gmail.com</h2>
+            <a href="https://www.instagram.com/taka_production/">Instagram </a>
+            <a href="https://taka-production.co.site/">Website</a>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Taka Production Studio</p>
+    </footer>
+
+    <script>
+        function updateOptions() {
+            const type = document.getElementById('type').value;
+            const scaleSelect = document.getElementById('scale');
+            const adDurationSelect = document.getElementById('ad-duration');
+            const scaleOptionSelect = document.getElementById('scale-option');
+            const episodeCountDiv = document.getElementById('episode-count');
+
+            adDurationSelect.style.display = (scaleSelect.value === 'ad') ? 'block' : 'none';
+            scaleOptionSelect.style.display = (scaleSelect.value === 'medium-large-scale') ? 'block' : 'none';
+            episodeCountDiv.style.display = (scaleSelect.value === 'series' || scaleSelect.value === 'medium-large-scale') ? 'block' : 'none';
+        }
+
+        function calculateCost() {
+            const type = document.getElementById('type').value;
+            const scale = document.getElementById('scale').value;
+            const adDuration = document.getElementById('ad-duration-select') ? document.getElementById('ad-duration-select').value : '';
+            const scaleOption = document.getElementById('scale-option-select') ? document.getElementById('scale-option-select').value : '';
+            const episodeCount = document.getElementById('episode-count-input') ? parseInt(document.getElementById('episode-count-input').value) : 1;
+
+            let totalCost = 0;
+            let costPerMinute = '-';
+            let details = '';
+
+            if (type === '2d') {
+                switch (scale) {
+                    case 'pilot':
+                        totalCost = 4000000;
+                        details = 'Pilot Cost for 2D Animation includes Director and Producers fees, storyboard artists, and a production team.';
+                        break;
+                    case 'film':
+                        totalCost = 16400000;
+                        details = 'Film production cost for 2D Animation, including multiple animators, a background artist, compositing, and editing.';
+                        break;
+                    case 'ad':
+                        if (adDuration === '1/2month') {
+                            totalCost = 1670000;
+                        } else if (adDuration === '1month') {
+                            totalCost = 2960000;
+                        } else if (adDuration === '2months') {
+                            totalCost = 6050000;
+                        }
+                        details = `Advertisement production cost for 2D Animation, assuming production over ${adDuration.replace('/', ' ')}.`;
+                        break;
+                    case 'series':
+                        totalCost = (61763000 / 10) * episodeCount;
+                        costPerMinute = 514750;
+                        details = `Series production cost for 2D Animation with ${episodeCount} episode(s), over a full production period including storyboard, animation, post-production, and more.`;
+                        break;
+                }
+            } else if (type === '3d') {
+                switch (scale) {
+                    case 'pilot':
+                        totalCost = 6900000;
+                        details = 'Pilot production cost for 3D Animation, including Directors, storyboard artists, character designers, animators, and post-production team.';
+                        break;
+                    case 'film':
+                        totalCost = 15850000;
+                        details = 'Film production cost for 3D Animation, involving 3D animators, modelers, background artists, and lighting experts.';
+                        break;
+                    case 'ad':
+                        if (adDuration === '1/2month') {
+                            totalCost = 1970000;
+                        } else if (adDuration === '1month') {
+                            totalCost = 3500000;
+                        } else if (adDuration === '2months') {
+                            totalCost = 7250000;
+                        }
+                        details = `Advertisement production cost for 3D Animation, assuming production over ${adDuration.replace('/', ' ')}.`;
+                        break;
+                    case 'series':
+                        totalCost = (56872500 / 10) * episodeCount;
+                        costPerMinute = 474000;
+                        details = `Series production cost for 3D Animation with ${episodeCount} episode(s), involving a full team of animators, modelers, VFX artists, and editors.`;
+                        break;
+                }
+            }
+
+            const costDisplay = document.getElementById('cost-display');
+            costDisplay.classList.add('fade-in');
+            document.getElementById('total-cost').textContent = totalCost.toLocaleString();
+            document.getElementById('cost-per-minute').textContent = costPerMinute !== '-' ? costPerMinute.toLocaleString() : '-';
+            document.getElementById('details-display').textContent = details;
+            setTimeout(() => costDisplay.classList.remove('fade-in'), 800);
+        }
+
+        function showDetails(type) {
+            const modal = document.getElementById('details-modal');
+            const modalContent = document.getElementById('details-content');
+            modalContent.textContent = `Details for ${type.toUpperCase()} Animation Projects will be provided soon.`;
+            modal.style.display = 'block';
+            modal.classList.add('slide-up');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('details-modal');
+            modal.classList.remove('slide-up');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const closeModalButton = document.getElementById('close-modal');
+            if (closeModalButton) {
+                closeModalButton.addEventListener('click', closeModal);
+            }
+        });
+    </script>
+</body>
+</html>
